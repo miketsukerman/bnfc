@@ -124,8 +124,7 @@ header inPackage name cf = unlines
     , "void " ++ ns ++ "yyerror(const char *str)"
     , "{"
     , "  extern char *"++ns++"yytext;"
-    , "  fprintf(stderr,\"error: line %d: %s at %s\\n\", "
-    , "    "++ns++"yy_mylinenumber, str, "++ns++"yytext);"
+    , "  throw "++ns++"::parse_error("++ ns ++ "yy_mylinenumber,str);"
     , "}"
     , ""
     , nsStart inPackage
