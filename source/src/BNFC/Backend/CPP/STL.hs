@@ -155,13 +155,23 @@ mkHeaderFile inPackage cf cats eps env = unlines $ concat
   , concatMap mkVar cats
   , [ "} YYSTYPE;"
     , ""
-    ]
+      -- https://www.gnu.org/software/bison/manual/html_node/Location-Type.html#Location-Type
+      , "typedef struct YYLTYPE"
+      , "{"
+      , "  int first_line;"
+      , "  int first_column;"
+      , "  int last_line;"
+      , "  int last_column;"
+      , "} YYLTYPE;"
+      , ""
+      ]
   , concatMap mkFuncs eps
   , [ nsEnd inPackage
     , ""
     , "#define " ++ nsDefine inPackage "_ERROR_" ++ " 258"
     , mkDefines (259 :: Int) env
     , "extern " ++ nsScope inPackage ++ "YYSTYPE " ++ nsString inPackage ++ "yylval;"
+    , "extern " ++ nsScope inPackage ++ "YYLTYPE " ++ nsString inPackage ++ "yylloc;"
     , ""
     , "#endif"
     ]
